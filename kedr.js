@@ -184,6 +184,7 @@ if(window.addEventListener) {
     function init () {
         // Находим canvas элемент
         canvas = document.getElementById('myCanvas');
+        canvas.focus()
         
         if (!canvas) {
             alert('Ошибка! Canvas элемент не найден!');
