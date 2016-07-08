@@ -9,18 +9,44 @@
 	</script>
 </head>
 <body>
+	<div id="dis" style="font-size:40px;color:red;text-align: center;padding-top: 100px; background-color:#000 ;position: absolute; width:100%;height:100%;">
+		ДИСКЛЕЙМЕР
+	</div>
+	<div id="dis2" style="font-size:30px;color:white;text-align: center;  margin-top: 200px;width:100%;position: absolute;">
+Чтобы рисовать орехом, нужно нажимать на кнопки навигации <b>F, G, H, J, K</b>
+<br> 
+<br><b>F</b> - повернуть налево
+<br><b>G</b> - повернуть направо
+<br><b>H</b> - рисовать
+<br><b>J</b> - передвинуть или остановить
+<br><b>K</b> - очистить
+
+	</div>
+	<div id="dis4" style="display:none;font-size:40px;color:red;text-align: center;padding-top: 100px; background-color:#000 ;position: absolute; width:100%;height:100%;">
+		DISCLAIMER
+	</div>	
+	<div id="dis3" style="display:none;font-size:30px;color:white;text-align: center;  margin-top: 200px;width:100%;position: absolute;">
+For drawing use buttons <b>F, G, H, J, K</b>
+<br> 
+<br><b>F</b> - turn left
+<br><b>G</b> - turn right
+<br><b>H</b> - draw
+<br><b>J</b> - jump or stop
+<br><b>K</b> - clear
+
+	</div>
+
+
 	<div style="position: absolute; text-align: center; width: 100%; height: 60px;opacity: 0.8;">
+		<!-- <img id="dis" src="img/dis.png" style="margin-top: 100px;width:300px;display: inline-block;position: absolute;"> -->
 		<div style="float:left;position: absolute;text-align: left;">
-			угол
+			angle:
 			<span id="angle">0</span>
-			<br>
-			скорость поворота
-			<span id="angleSpeed">1</span>
 			<br>	
-			скорость ореха
+			nut speed:
 			<span id="speed">0</span>
 			<br>
-			<button onclick="toImage()" href="">перевести в картинку</button>
+			<button onclick="toImage()" href="">image</button>
 		</div>
 
 <!-- 		<div id="buttonD" style="background:url(img/buttonD.png); width:60px; height:60px; display: inline-block;"></div>
