@@ -4,12 +4,10 @@ var canvas, context, tool,
     maxY,
     x, y, an = 0, anOld,
     timeAngle = (new Date()).getTime(),
-    timeKeydownJ = (new Date()).getTime(),
     clearCount = 4,
     intervalSpeedIncrease,
-    speed = 1,
-    isMouseDown = false, isKeydownD = false, isKeydownF = false, isKeydownG = false, isKeydownH = false, isKeydownJ = false, isKeydownK = false,
-    angleChangeSpeed = 0;
+    speed = 0,
+    isMouseDown = false, isKeydownD = false, isKeydownF = false, isKeydownG = false, isKeydownH = false, isKeydownJ = false, isKeydownK = false;
 
 
 function toImage() {
@@ -18,16 +16,17 @@ function toImage() {
 	}
 }
 
-setTimeout(function() {
-	document.getElementById("dis2").style.display="none"
-	document.getElementById("dis3").style.display="block"
-	document.getElementById("dis4").style.display="block" 
-}, 5000)
+// setTimeout(function() {
+// 	document.getElementById("dis2").style.display="none"
+// 	document.getElementById("dis3").style.display="block"
+// 	document.getElementById("dis4").style.display="block" 
+// }, 5000)
 setTimeout(function() {
 	document.getElementById("dis").style.display="none"
+	document.getElementById("dis2").style.display="none"
 	document.getElementById("dis3").style.display="none" 
 	document.getElementById("dis4").style.display="none" 
-}, 10000)
+}, 1000)
 
 
 
@@ -39,7 +38,7 @@ if(window.addEventListener) {
 			angle(isKeydownG ? Math.PI/32 : -Math.PI/32)
 		}		
 		
-		if (isKeydownH || isKeydownJ) {
+		if (speed) {
 			x += Math.cos(an) * speed * 0.4;
 			y += Math.sin(an) * speed * 0.4;
 			isLine = true;
@@ -76,7 +75,7 @@ if(window.addEventListener) {
 			document.getElementById("speed").innerText = speed.toFixed(2)
 		}
 
-		if (isKeydownF || isKeydownG || isKeydownH || isKeydownJ || isKeydownK) {
+		if (isKeydownF || isKeydownG || speed || isKeydownK) {
 			draw()
 		}
 		
@@ -204,34 +203,57 @@ if(window.addEventListener) {
         	isKeydownG = false;
 			document.getElementById("buttonG").style.background = "url(img/buttonG.png)"
         }
-        else if ((72 === ev.which) && !isKeydownJ) {
-        	clearInterval(intervalSpeedIncrease);
-        	intervalSpeedIncrease = null
+        else if (72 === ev.which) {
 
-        	if (isKeydownJ) {
-				document.getElementById("buttonH").style.background = "url(img/buttonH.png)"
-            	isKeydownH = false;
+        	if (!isKeydownJ) {
+	        	var waitCount = 1;
+
+	        	if (!speed) {
+	        		waitCount = 5;
+	        	}
+
+	            clearInterval(intervalSpeedIncrease);
+				intervalSpeedIncrease = setInterval(function() {
+					if (waitCount < 5) {
+						waitCount++;
+						return;
+					}
+
+					speed = speed * 0.8
+
+					if (speed <= 1) {
+						speed = 0;
+						clearInterval(intervalSpeedIncrease);
+					}
+				}, 100);         	
         	}
+
+
+
+        	isKeydownH = false;
+			document.getElementById("buttonH").style.background = "url(img/buttonH.png)"
         }
         else if (74 === ev.which) {
+        	if (!isKeydownH) {
+	            clearInterval(intervalSpeedIncrease);
+				speed = 0;
+        	}
         	isKeydownJ = false;
 			document.getElementById("buttonJ").style.background = "url(img/buttonJ.png)"
-            clearInterval(intervalSpeedIncrease);
-            intervalSpeedIncrease = null
         }
         else if (75 === ev.which) {
         	isKeydownK = false;
 			document.getElementById("buttonK").style.background = "url(img/buttonK.png)"
         }
 
-		if (!isKeydownH && !isKeydownF && !isKeydownG && !isKeydownJ) {
-			speed = 1;
-        }   
+		// if (!isKeydownH && !isKeydownF && !isKeydownG && !isKeydownJ) {
+		// 	speed = 1;
+  //       }   
     }
 
     function onKeydown(ev) {
 		if (((70 === ev.which) && !isKeydownF) || ((71 === ev.which) && !isKeydownG)) {
-        	if (250 > ((new Date()).getTime() - timeAngle)) {
+        	if (200 > ((new Date()).getTime() - timeAngle)) {
         		an = anOld
 
             	if (70 === ev.which) {
@@ -251,9 +273,21 @@ if(window.addEventListener) {
         	timeAngle = (new Date()).getTime()
         } 
 
-        if ((72 === ev.which) && (!isKeydownH || !intervalSpeedIncrease)) {
+        if ((72 === ev.which) && !isKeydownH) {
+        	var waitCount = 1;
+
+        	if (!speed) {
+        		waitCount = 5;
+        		speed = 1;
+        	}
+
 			clearInterval(intervalSpeedIncrease);
 			intervalSpeedIncrease = setInterval(function() {
+				if (waitCount < 5) {
+					waitCount++;
+					return;
+				}
+
 				speed = speed * 1.2
 
 				if (speed >= 20) {
@@ -264,43 +298,33 @@ if(window.addEventListener) {
 			}, 100);
         }
         else if ((74 === ev.which) && !isKeydownJ) {
-        	document.getElementById("buttonJ").style.background = "url(img/buttonKeydownJ.png)"
+        	// if (isKeydownH) {
+				// speed = 0;
+    //     	// }
 
-        	if (isKeydownH) {
-        		timeKeydownJ = (new Date()).getTime();
+        	var waitCount = 1;
 
-				clearInterval(intervalSpeedIncrease);
-				intervalSpeedIncrease = setInterval(function() {
-					speed = speed * 0.5
+        	if (!speed) {
+        		waitCount = 5;
+        	}        
 
-					if (speed <= 1) {
-						speed = 1;
-						clearInterval(intervalSpeedIncrease);
-						intervalSpeedIncrease = null;
-
-		            	isKeydownH = false;
-
-						document.getElementById("buttonH").style.background = "url(img/buttonH.png)"
-
-					}
-				}, 100);
-
-				return;
-			}
-
-			isKeydownH = false;
+    		speed = 5;
 
 			clearInterval(intervalSpeedIncrease);
 			intervalSpeedIncrease = setInterval(function() {
-				speed = speed * 1.4
+				if (waitCount < 5) {
+					waitCount++;
+					return;
+				}
 
-				if (speed >=15) {
-					speed = 15;
+				speed = (speed || 1) * 1.4
+
+				if (speed >= 20) {
+					speed =  20;
 					clearInterval(intervalSpeedIncrease);
 					intervalSpeedIncrease = null;
 				}
-			}, 100);		
-						
+			}, 100);	
         }
 
         if (68 === ev.which) {
@@ -322,6 +346,10 @@ if(window.addEventListener) {
         }
         else if (74 === ev.which && !isKeydownJ) {
         	isKeydownJ = true;
+        	// ev.which = 72
+        	// onKeyup(ev);
+        	// console.log("e")
+        	document.getElementById("buttonJ").style.background = "url(img/buttonKeydownJ.png)"
         }
         else if (75 === ev.which) {
         	var t;
